@@ -1,0 +1,140 @@
+------ // KEYBINDS \\ ------
+-- [ (Right Bracket) to increase
+-- ] (Left Bracket) to decrease
+-- - (Minus) to Open/Close Graphical User Interface (GUI)
+
+-- // OPTIONS \\ --
+
+local DistanceNum = 2 --# Change the distance you start off with once you execute the script
+local Index = 1 --# The number that increases when you press ( or )
+local KeyOption = Enum.KeyCode.R --# Replace the last letter of "Enum.KeyCode.F" with any letter, number or symbol on your Keyboard
+
+-- // DO NOT TOUCH THE FOLLOWING UNLESS YOU KNOW WHAT YOU'RE DOING \\ --
+
+local GUI = Instance.new("ScreenGui")
+local Gradient = Instance.new("Frame")
+local UIGradient = Instance.new("UIGradient")
+local GradientFrame = Instance.new("Frame")
+local TextLabel = Instance.new("TextLabel")
+local Distance = Instance.new("TextLabel")
+local UICorner = Instance.new("UICorner")
+local Information = Instance.new("TextLabel")
+local UICorner_2 = Instance.new("UICorner")
+
+GUI.Name = " "
+GUI.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+GUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+Gradient.Name = "Gradient"
+Gradient.Parent = GUI
+Gradient.AnchorPoint = Vector2.new(0.5, 0.5)
+Gradient.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Gradient.BorderColor3 = Color3.fromRGB(27, 42, 53)
+Gradient.BorderSizePixel = 0
+Gradient.Position = UDim2.new(0.16909067, 0, 0.8425597763, 0)
+Gradient.Size = UDim2.new(0, 358, 0, 113)
+
+UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(49, 49, 49)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(25, 25, 25))}
+UIGradient.Rotation = 45
+UIGradient.Parent = Gradient
+
+GradientFrame.Name = "Gradient.Frame"
+GradientFrame.Parent = Gradient
+GradientFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+GradientFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+GradientFrame.BorderSizePixel = 0
+GradientFrame.Position = UDim2.new(0.498603374, 0, 0.101769909, 0)
+GradientFrame.Size = UDim2.new(0, 367, 0, 23)
+
+TextLabel.Parent = GradientFrame
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1.000
+TextLabel.Position = UDim2.new(0.0136238951, 0, 0, 0)
+TextLabel.Size = UDim2.new(0, 362, 0, 23)
+TextLabel.Font = Enum.Font.Sarpanch
+TextLabel.Text = "CFrame.Teleport"
+TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.TextSize = 26.000
+TextLabel.TextWrapped = true
+
+Distance.Name = "Distance"
+Distance.Parent = Gradient
+Distance.BackgroundColor3 = Color3.fromRGB(91, 91, 91)
+Distance.BackgroundTransparency = 0.900
+Distance.Position = UDim2.new(0.0558659211, 0, 0.362831861, 0)
+Distance.Size = UDim2.new(0, 159, 0, 50)
+Distance.Font = Enum.Font.Sarpanch
+Distance.Text = "Distance("..DistanceNum..")"
+Distance.TextColor3 = Color3.fromRGB(226, 226, 226)
+Distance.TextSize = 25.000
+Distance.TextWrapped = true
+
+UICorner.CornerRadius = UDim.new(0, 399)
+UICorner.Parent = Distance
+
+Information.Name = "Information"
+Information.Parent = Gradient
+Information.BackgroundColor3 = Color3.fromRGB(91, 91, 91)
+Information.BackgroundTransparency = 1.000
+Information.Position = UDim2.new(0.553072691, 0, 0.203539819, 0)
+Information.Size = UDim2.new(0, 159, 0, 90)
+Information.Font = Enum.Font.Sarpanch
+Information.Text = "Press [ to increase Press ] to decrease  Press - to hide     Press R to Teleport"
+Information.TextColor3 = Color3.fromRGB(226, 226, 226)
+Information.TextSize = 20.000
+Information.TextWrapped = true
+
+UICorner_2.CornerRadius = UDim.new(0, 4)
+UICorner_2.Parent = Information
+
+local UserInputSerivce = game:GetService('UserInputService')
+local Pl = game:GetService('Players').LocalPlayer
+
+local Hidden = false
+local debounce = false
+UserInputSerivce.InputBegan:Connect(function(input,Typing)
+	if input.KeyCode == Enum.KeyCode.Minus and not Typing and debounce ~= true then
+		debounce = true
+		delay(2.05,function()
+			debounce = false
+		end)
+		if Hidden == false then
+			game:GetService('TweenService'):Create(Gradient,TweenInfo.new(2,Enum.EasingStyle.Back,Enum.EasingDirection.InOut),{Position = Gradient.Position - UDim2.new(0.7, 0, 0, 0)}):Play()
+			Hidden = true
+		else if Hidden == true then
+			game:GetService('TweenService'):Create(Gradient,TweenInfo.new(2,Enum.EasingStyle.Back,Enum.EasingDirection.InOut),{Position = Gradient.Position + UDim2.new(0.7, 0, 0, 0)}):Play()
+			Hidden = false
+		end
+		end
+	end
+end)
+
+UserInputSerivce.InputBegan:Connect(function(input,Typing)
+	if input.KeyCode == KeyOption and not Typing then
+		local Character = Pl.Character
+		local CharacterParts = {
+			Head = Character.Head,
+			Torso = Character.Torso,
+			RArm = Character:FindFirstChild("Right Arm"),
+			LArm = Character:FindFirstChild("Left Arm"),
+			Rleg = Character:FindFirstChild("Right Leg"),
+			LLeg = Character:FindFirstChild("Left Leg"),
+			HumRp = Character.HumanoidRootPart,
+			Hum = Character.Humanoid,
+		}
+		CharacterParts.HumRp.CFrame = (CharacterParts.HumRp.CFrame * CFrame.new(0, 0, -DistanceNum))
+	end
+end)
+
+UserInputSerivce.InputBegan:Connect(function(input,Typing)
+	if input.KeyCode == Enum.KeyCode.RightBracket and not Typing then
+		task.wait()
+		DistanceNum += Index
+		Distance.Text = "Distance("..DistanceNum..")"
+	else if input.KeyCode == Enum.KeyCode.LeftBracket and not Typing then
+		task.wait()
+		DistanceNum -= Index
+		Distance.Text = "Distance("..DistanceNum..")"
+	end
+	end
+end)
